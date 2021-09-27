@@ -1,7 +1,10 @@
 import mlflow
 from mlflow.tracking import MlflowClient
+
 EXPERIMENT_NAME = "[FR] [Lyon] [eric_pinto] taxifare v1"
+
 client = MlflowClient()
+
 try:
     experiment_id = client.create_experiment(EXPERIMENT_NAME)
 except BaseException:

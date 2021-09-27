@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ouic/code/ouic/TaxiFareModel/mlruns/2/f4482b8a799e44338495d1a960bb8801/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '2'
+lifecycle_stage: active
+name: ''
+run_id: f4482b8a799e44338495d1a960bb8801
+run_uuid: f4482b8a799e44338495d1a960bb8801
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1632754840167
+status: 1
+tags: []
+user_id: unknown

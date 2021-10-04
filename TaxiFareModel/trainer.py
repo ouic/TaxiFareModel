@@ -1,9 +1,11 @@
 import joblib
 from termcolor import colored
 import mlflow
-from TaxiFareModel.data import get_data, get_data_from_gcp, clean_data
+from TaxiFareModel.data import get_data_from_gcp, clean_data
 from TaxiFareModel.encoders import TimeFeaturesEncoder, DistanceTransformer
+from TaxiFareModel.gcp import storage_upload
 from TaxiFareModel.utils import compute_rmse
+from TaxiFareModel.params import MLFLOW_URI, EXPERIMENT_NAME, BUCKET_NAME, MODEL_VERSION, MODEL_VERSION
 from memoized_property import memoized_property
 from mlflow.tracking import MlflowClient
 from sklearn.compose import ColumnTransformer
@@ -12,8 +14,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-MLFLOW_URI = "https://mlflow.lewagon.co/"
-EXPERIMENT_NAME = "first_experiment"
 
 
 class Trainer(object):
@@ -69,25 +69,10 @@ class Trainer(object):
         self.mlflow_log_metric("rmse", rmse)
         return round(rmse, 2)
 
-    def save_model(self):
+    def save_model_locally(self):
         """Save the model into a .joblib format"""
         joblib.dump(self.pipeline, 'model.joblib')
         print(colored("model.joblib saved locally", "green"))
-
-    def save_model_to_gcp(reg):
-        """Save the model into a .joblib and upload it on Google Storage /models folder
-        HINTS : use sklearn.joblib (or jbolib) libraries and google-cloud-storage"""
-        from sklearn.externals import joblib
-        local_model_name = 'model.joblib'
-        # saving the trained model to disk (which does not really make sense
-        # if we are running this code on GCP, because then this file cannot be accessed once the code finished its execution)
-        joblib.dump(reg, local_model_name)
-        print("saved model.joblib locally")
-        client = storage.Client().bucket(BUCKET_NAME)
-        storage_location = f"models/{MODEL_NAME}/{MODEL_VERSION}/{local_model_name}"
-        blob = client.blob(storage_location)
-        blob.upload_from_filename(local_model_name)
-        print("uploaded model.joblib to gcp cloud storage under \n => {}".format(storage_location))
 
     # MLFlow methods
     @memoized_property
@@ -117,8 +102,7 @@ class Trainer(object):
 if __name__ == "__main__":
     # Get and clean data
     N = 100
-    df = get_data(nrows=N)
-    # ⚠️ alternatively use data from gcp with get_data_from_gcp
+    df = get_data_from_gcp(nrows=N)
     df = clean_data(df)
     y = df["fare_amount"]
     X = df.drop("fare_amount", axis=1)
@@ -129,4 +113,5 @@ if __name__ == "__main__":
     trainer.run()
     rmse = trainer.evaluate(X_test, y_test)
     print(f"rmse: {rmse}")
-    trainer.save_model()
+    trainer.save_model_locally()
+    storage_upload()

@@ -1,5 +1,5 @@
 # Data analysis
-- Document here the project: TaxiFareModel
+- Document here the project: taxifare
 - Description: Project Description
 - Data Source:
 - Type of analysis:
@@ -22,15 +22,15 @@ Unittest test:
 make clean install test
 ```
 
-Check for TaxiFareModel in gitlab.com/{group}.
+Check for taxifare in gitlab.com/{group}.
 If your project is not set please add it:
 
-- Create a new project on `gitlab.com/{group}/TaxiFareModel`
+- Create a new project on `gitlab.com/{group}/taxifare`
 - Then populate it:
 
 ```bash
-##   e.g. if group is "{group}" and project_name is "TaxiFareModel"
-git remote add origin git@github.com:{group}/TaxiFareModel.git
+##   e.g. if group is "{group}" and project_name is "taxifare"
+git remote add origin git@github.com:{group}/taxifare.git
 git push -u origin master
 git push -u origin --tags
 ```
@@ -41,12 +41,12 @@ Functionnal test with a script:
 cd
 mkdir tmp
 cd tmp
-TaxiFareModel-run
+taxifare-run
 ```
 
 # Install
 
-Go to `https://github.com/{group}/TaxiFareModel` to see the project, manage issues,
+Go to `https://github.com/{group}/taxifare` to see the project, manage issues,
 setup you ssh public key, ...
 
 Create a python3 virtualenv and activate it:
@@ -59,8 +59,8 @@ deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
 Clone the project and install it:
 
 ```bash
-git clone git@github.com:{group}/TaxiFareModel.git
-cd TaxiFareModel
+git clone git@github.com:{group}/taxifare.git
+cd taxifare
 pip install -r requirements.txt
 make clean install test                # install and test
 ```
@@ -70,5 +70,5 @@ Functionnal test with a script:
 cd
 mkdir tmp
 cd tmp
-TaxiFareModel-run
+taxifare-run
 ```
